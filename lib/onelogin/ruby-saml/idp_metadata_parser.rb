@@ -185,18 +185,18 @@ module OneLogin
       #
       def certificate_base64
         @certificate_base64 ||= begin
-          node = REXML::XPath.last(
+          node = REXML::XPath.match(
               document,
               "/md:EntityDescriptor/md:IDPSSODescriptor/md:KeyDescriptor[@use='signing']/ds:KeyInfo/ds:X509Data/ds:X509Certificate",
               { "md" => METADATA, "ds" => DSIG }
-          )
+          ).last
 
           unless node
-            node = REXML::XPath.last(
+            node = REXML::XPath.match(
                 document,
                 "/md:EntityDescriptor/md:IDPSSODescriptor/md:KeyDescriptor/ds:KeyInfo/ds:X509Data/ds:X509Certificate",
                 { "md" => METADATA, "ds" => DSIG }
-            )
+            ).last
           end
           node.text if node
         end
